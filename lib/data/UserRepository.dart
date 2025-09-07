@@ -13,4 +13,16 @@ class UserRepository {
         .map((json) => UserModel.fromJson(json))
         .toList();
   }
+
+  Future<UserModel> login(String email, String password) async {
+    final response = await _dio.post(
+      "login",
+      data: {
+        "email": email,
+        "password": password,
+      },
+    );
+
+    return UserModel.fromJson(response.data);
+  }
 }

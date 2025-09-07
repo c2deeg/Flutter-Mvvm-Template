@@ -53,6 +53,16 @@ class UserViewController extends GetxController {
     }
   }
 
+  Future<void> login()  async{
+    try{
+      final result = await _repository.login("email", "password");
+    }catch(e){
+
+    }finally{
+
+    }
+  }
+
   //code latest
   Future<void> refreshUsers() async {
     page = 1;
