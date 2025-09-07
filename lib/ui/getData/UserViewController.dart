@@ -53,6 +53,7 @@ class UserViewController extends GetxController {
     }
   }
 
+  //code
   Future<void> refreshUsers() async {
     page = 1;
     hasMore.value = true;
