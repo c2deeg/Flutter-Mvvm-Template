@@ -5,9 +5,12 @@ import '../../data/UserModel.dart';
 import '../../data/UserRepository.dart';
 
 
-class UserViewController extends GetxController {
-  final UserRepository _repository = UserRepository();
 
+class UserViewController extends GetxController {
+  final UserRepository _repository;
+
+  UserViewController({UserRepository? repository})
+      : _repository = repository ?? UserRepository();
 
   var users = <UserModel>[].obs;
   var isLoading = false.obs;
@@ -29,7 +32,7 @@ class UserViewController extends GetxController {
     error.value = "";
 
     try {
-       debugPrint("checking--------${page}");
+      debugPrint("checking--------$page");
       final result = await _repository.fetchUsers();
 
       if (result.isEmpty) {
@@ -42,10 +45,6 @@ class UserViewController extends GetxController {
         }
         page++;
       }
-      // var totalCount = 0;
-      // if(users.length==totalCount){
-      //   hasMore.value = false;
-      // }
     } catch (e) {
       error.value = e.toString();
     } finally {
@@ -53,20 +52,18 @@ class UserViewController extends GetxController {
     }
   }
 
-  Future<void> login()  async{
-    try{
-      final result = await _repository.login("email", "password");
-    }catch(e){
-
-    }finally{
-
+  Future<void> login() async {
+    try {
+      await _repository.login("email", "password");
+    } catch (e) {
+      error.value = e.toString();
     }
   }
 
-  //code latest
   Future<void> refreshUsers() async {
     page = 1;
     hasMore.value = true;
     await getUsers();
   }
 }
+
