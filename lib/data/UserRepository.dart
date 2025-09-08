@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 
 import '../core/DioClient.dart';
@@ -24,5 +26,21 @@ class UserRepository {
     );
 
     return UserModel.fromJson(response.data);
+  }
+
+  Future<String> uploadImage(File imageFile) async {
+    String fileName = imageFile.path.split('/').last;
+
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(imageFile.path, filename: fileName),
+    });
+
+    final response = await _dio.post("/upload", data: formData);
+
+    if (response.statusCode == 200) {
+      return response.data["message"];
+    } else {
+      throw Exception("Upload failed");
+    }
   }
 }
